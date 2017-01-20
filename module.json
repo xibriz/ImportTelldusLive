@@ -15,7 +15,7 @@
     "defaults": {
         "title": "__m_title__",
         "description": "__m_descr__",
-        "url": "http://api.telldus.com",
+        "url": "https://api.telldus.com",
         "publicKey": "",
         "privateKey": "",
         "token": "",
