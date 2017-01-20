@@ -1,0 +1,159 @@
+{
+    "dependencies": [],
+    "singleton": false,
+    "category": "support_external_dev",
+    "author": "Ruben Andreassen",
+    "homepage": "https://github.com/xibriz",
+    "icon": "icon.png",
+    "moduleName": "ImportTelldusLive",
+    "version": "1.0.0",
+    "maturity": "stable",
+    "repository": {
+        "type": "git",
+        "source": "https://github.com/xibriz/ImportTelldusLive"
+    },
+    "defaults": {
+        "title": "__m_title__",
+        "description": "__m_descr__",
+        "url": "http://api.telldus.com",
+        "publicKey": "",
+        "privateKey": "",
+        "token": "",
+        "tokenSecret": "",
+        "dT": 60000,
+        "sT": 300000,
+        "urlEmonCMS": "",
+        "apiKeyEmonCMS": "",
+        "skipDevices": [],
+        "renderDevices": []
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+            "url": {
+                "type": "string",
+                "required": true
+            },
+            "publicKey": {
+                "type": "string",
+                "required": true
+            },
+            "privateKey": {
+                "type": "string",
+                "required": true
+            },
+            "token": {
+                "type": "string",
+                "required": true
+            },
+            "tokenSecret": {
+                "type": "string",
+                "required": true
+            },
+            "dT": {
+                "type": "number",
+                "required": true
+            },
+            "sT": {
+                "type": "number",
+                "required": true
+            },
+            "urlEmonCMS": {
+                "type": "string",
+                "required": false
+            },
+            "apiKeyEmonCMS": {
+                "type": "string",
+                "required": false
+            },
+            "skipDevices": {
+                "type": "array",
+                "items": {
+                    "field": "enum",
+                    "datasource": "namespaces",
+                    "enum": "namespaces:devices_all:deviceId",
+                    "required": true
+                }
+            },
+            "renderDevices": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "deviceId": {
+                            "field": "enum",
+                            "datasource": "namespaces",
+                            "enum": "namespaces:devices_all:deviceId",
+                            "required": true
+                        },
+                        "deviceType": {
+                            "type": "string",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "options": {
+        "fields": {
+            "url": {
+                "label": "__l_url__"
+            },
+            "publicKey": {
+                "label": "__l_publicKey__"
+            },
+            "privateKey": {
+                "label": "__l_privateKey__"
+            },
+            "token": {
+                "label": "__l_token__"
+            },
+            "tokenSecret": {
+                "label": "__l_tokenSecret__"
+            },
+            "dT": {
+                "label": "__l_dT__"
+            },
+            "sT": {
+                "label": "__l_sT__"
+            },
+            "urlEmonCMS": {
+                "label": "__l_urlEmonCMS__"
+            },
+            "apiKeyEmonCMS": {
+                "label": "__l_apiKeyEmonCMS__"
+            },
+            "skipDevices": {
+                "label": "__l_skipDevices__",
+                "fields": {
+                    "item": {
+                        "type": "select",
+                        "datasource": "namespaces",
+                        "field": "optionLabels",
+                        "optionLabels": "namespaces:devices_all:deviceName"
+                    }
+                }
+            },
+            "renderDevices": {
+                "label": "__l_renderDevices__",
+                "fields": {
+                    "item": {
+                        "fields": {
+                            "deviceId": {
+                                "type": "select",
+                                "readonly": true,
+                                "datasource": "namespaces",
+                                "field": "optionLabels",
+                                "optionLabels": "namespaces:devices_all:deviceName"
+                            },
+                            "deviceType": {
+                                "readonly": true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
