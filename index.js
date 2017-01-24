@@ -186,7 +186,7 @@ ImportTelldusLive.prototype.parseDeviceResponse = function (response) {
                     moduleId: this.id
                 });
 
-                self.renderDevice({deviceId: localId, deviceType: "sensorMultilevel"});
+                self.renderDevice({deviceId: localId, deviceType: deviceType});
             }
         });
 
