@@ -6,7 +6,7 @@
     "homepage": "https://github.com/xibriz",
     "icon": "icon.png",
     "moduleName": "ImportTelldusLive",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "maturity": "stable",
     "repository": {
         "type": "git",
