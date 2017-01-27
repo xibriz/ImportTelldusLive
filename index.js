@@ -104,7 +104,11 @@ ImportTelldusLive.prototype.requestDeviceUpdate = function () {
                 self.parseDeviceResponse(response);
             },
             error: function (response) {
-                console.log("Can not make request: " + response.statusText); // don't add it to notifications, since it will fill all the notifcations on error
+                console.log("Can not make request (requestDeviceUpdate): " + response.statusText); // don't add it to notifications, since it will fill all the notifcations on error
+                if (response.status === -1) {
+                    console.log("Retry requestDeviceUpdate");
+                    self.requestDeviceUpdate();
+                }
             },
             complete: function () {
                 var dt = self.lastRequestD + self.dT - Date.now();
@@ -261,7 +265,11 @@ ImportTelldusLive.prototype.handleDeviceCommand = function (vDev, command, args)
                 }
             },
             error: function (response) {
-                console.log("Can not make request: " + response.statusText); // don't add it to notifications, since it will fill all the notifcations on error
+                console.log("Can not make request (handleDeviceCommand): " + response.statusText);
+                if (response.status === -1) {
+                    console.log("Retry handleDeviceCommand");
+                    self.handleDeviceCommand(vDev, command, args);
+                }
             },
             complete: function () {
             }
@@ -288,7 +296,11 @@ ImportTelldusLive.prototype.logSensorValue = function (vDev) {
                 //console.log("response status "+response.data.success+" message: "+response.data.message);
             },
             error: function (response) {
-                console.log("Can not make request: " + response.statusText); // don't add it to notifications, since it will fill all the notifcations on error
+                console.log("Can not make request (logSensorValue): " + response.statusText);
+                if (response.status === -1) {
+                    console.log("Retry logSensorValue");
+                    self.logSensorValue(vDev);
+                }
             },
             complete: function () {
             }
@@ -348,7 +360,11 @@ ImportTelldusLive.prototype.requestSensorUpdate = function () {
                 self.parseSensorResponse(response);
             },
             error: function (response) {
-                console.log("Can not make request: " + response.statusText); // don't add it to notifications, since it will fill all the notifcations on error
+                console.log("Can not make request (requestSensorUpdate): " + response.statusText);
+                if (response.status === -1) {
+                    console.log("Retry requestSensorUpdate");
+                    self.requestSensorUpdate();
+                }
             },
             complete: function () {
                 var dt = self.lastRequestS + self.sT - Date.now();
