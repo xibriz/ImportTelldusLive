@@ -8,6 +8,7 @@
     "l_tokenSecret": "Token Secret",
     "l_dT":"Update period for Devices (in milliseconds)",
     "l_sT":"Update period for Sensors (in milliseconds)",
+    "l_alwaysSyncTitlesFromTelldus":"Always sync titles from Telldus (thus overriding changes made in Z-Way)",
     "l_urlEmonCMS":"URL to your EmonCMS installation for logging of sensor values",
     "l_apiKeyEmonCMS":"Write API Key of EmonCMS",
     "l_skipDevices": "List of devices not to import from remote side",
