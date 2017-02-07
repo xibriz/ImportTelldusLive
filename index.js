@@ -193,30 +193,6 @@ ImportTelldusLive.prototype.parseDeviceResponse = function (response) {
                 self.renderDevice({deviceId: localId, deviceType: deviceType});
             }
         });
-
-        if (data.structureChanged) {
-            var removeList = this.controller.devices.filter(function (xDev) {
-                var found = false;
-
-                if (xDev.id.indexOf("TL_" + self.id + "_") === -1) {
-                    return false; // not to remove devices created by other modules
-                }
-
-                data.devices.forEach(function (item) {
-                    if (("TL_" + self.id + "_" + item.id) === xDev.id) {
-                        found |= true;
-                        return false; // break
-                    }
-                });
-                return !found;
-            }).map(function (yDev) {
-                return yDev.id;
-            });
-
-            removeList.forEach(function (item) {
-                self.controller.devices.remove(item);
-            });
-        }
     }
 };
 
@@ -226,19 +202,21 @@ ImportTelldusLive.prototype.handleDeviceCommand = function (vDev, command, args)
     var remoteId = vDev.id.slice(("TL_" + this.id + "_").length);
 
     var level = command;
-    var method = 0;
-    var tlLevel = 0;
+    var url = "";
     switch (command) {
+        case "update":
+            remoteId = remoteId.slice(0, -1);
+            url = this.urlPrefix + '/json/sensor/info?id=' + remoteId;
+            break;
         case "on":
-            method = 1;
+            url = this.urlPrefix + '/json/device/command?id=' + remoteId + '&method=1';
             break;
         case "off":
-            method = 2;
+            url = this.urlPrefix + '/json/device/command?id=' + remoteId + '&method=2';
             break;
         case "exact":
-            method = 16; //Dim
             level = args.level;
-            tlLevel = Math.round((level / 99) * 255);
+            url = this.urlPrefix + '/json/device/command?id=' + remoteId + '&method=16&value=' + Math.round((level / 99) * 255);
             break;
         default:
             return;
@@ -247,7 +225,7 @@ ImportTelldusLive.prototype.handleDeviceCommand = function (vDev, command, args)
     try {
         //Request data
         var request_data = {
-            url: this.urlPrefix + '/json/device/command?id=' + remoteId + '&method=' + method + '&value=' + tlLevel,
+            url: url,
             method: 'GET'
         };
 
@@ -259,8 +237,22 @@ ImportTelldusLive.prototype.handleDeviceCommand = function (vDev, command, args)
             success: function (response) {
                 if (response.status === 200, response.contentType === "application/json") {
                     var data = response.data;
-                    if (data.status === "success") {
+                    console.log(data.id);
+                    console.log(remoteId);
+                    //Device response
+                    if (data.status !== undefined && data.status === "success") {
                         vDev.set("metrics:level", level);
+                    }
+                    //Sensor response
+                    else if (data.id !== undefined && data.id === remoteId) {
+                        response.data = {
+                            sensor: [
+                                data
+                            ]
+                        };
+                        self.parseSensorResponse(response);
+                    } else {
+                        console.log("Unknown or error response (handleDeviceCommand)");
                     }
                 }
             },
@@ -286,7 +278,8 @@ ImportTelldusLive.prototype.logSensorValue = function (vDev) {
         return;
     }
     try {
-        var url = this.urlEmonCMSPrefix + "/input/post.json?time=" + vDev.get("updateTime") + "&node=" + vDev.id.slice(0, -1) + "&json={%22" + vDev.get("metrics:icon") + "%22:%22" + vDev.get("metrics:level") + "%22}&apikey=" + this.apiKeyEmonCMS;
+        var remoteId = vDev.id.slice(("TL_" + this.id + "_").length);
+        var url = this.urlEmonCMSPrefix + "/input/post.json?time=" + vDev.get("updateTime") + "&node=" + remoteId.slice(0, -1) + "&json={%22" + vDev.get("metrics:icon") + "%22:%22" + vDev.get("metrics:level") + "%22}&apikey=" + this.apiKeyEmonCMS;
         //console.log("Logging sensor value " + url);
         http.request({
             url: url,
@@ -424,7 +417,9 @@ ImportTelldusLive.prototype.parseSensorResponse = function (response) {
                             }
                         },
                         overlay: {},
-                        handler: {},
+                        handler: function (command, args) {
+                            self.handleDeviceCommand(this, command, args);
+                        },
                         moduleId: this.id,
                         probeType: icon,
                         updateTime: item.lastUpdated
@@ -436,34 +431,5 @@ ImportTelldusLive.prototype.parseSensorResponse = function (response) {
                 subId++;
             });
         });
-
-        if (data.structureChanged) {
-            var removeList = this.controller.devices.filter(function (xDev) {
-                var found = false;
-
-                if (xDev.id.indexOf("TL_" + self.id + "_") === -1) {
-                    return false; // not to remove devices created by other modules
-                }
-
-                data.sensor.forEach(function (item) {
-                    var subId = 0;
-                    item.data.forEach(function (sensorData) {
-                        if (("TL_" + self.id + "_" + item.id + "" + subId) === xDev.id) {
-                            found |= true;
-                            return false; // break
-                        }
-                        subId++;
-                    });
-                    return !found;
-                });
-                return found;
-            }).map(function (yDev) {
-                return yDev.id;
-            });
-
-            removeList.forEach(function (item) {
-                self.controller.devices.remove(item);
-            });
-        }
     }
 };
