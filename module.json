@@ -22,6 +22,7 @@
         "tokenSecret": "",
         "dT": 60000,
         "sT": 300000,
+        "alwaysSyncTitlesFromTelldus": true,
         "urlEmonCMS": "",
         "apiKeyEmonCMS": "",
         "skipDevices": [],
@@ -57,6 +58,9 @@
             "sT": {
                 "type": "number",
                 "required": true
+            },
+            "alwaysSyncTitlesFromTelldus": {
+                "type": "boolean"
             },
             "urlEmonCMS": {
                 "type": "string",
@@ -117,6 +121,9 @@
             },
             "sT": {
                 "label": "__l_sT__"
+            },
+            "alwaysSyncTitlesFromTelldus": {
+                "label": "__l_alwaysSyncTitlesFromTelldus__"
             },
             "urlEmonCMS": {
                 "label": "__l_urlEmonCMS__"

@@ -35,6 +35,7 @@ ImportTelldusLive.prototype.init = function (config) {
     this.lastRequestS = 0;
     this.timerD = null; //Device Timer
     this.timerS = null; //Sensor Timer
+    this.alwaysSyncTitlesFromTelldus = this.config.alwaysSyncTitlesFromTelldus;
 
     //Init oAuth
     this.oauth = OAuth({
@@ -167,7 +168,10 @@ ImportTelldusLive.prototype.parseDeviceResponse = function (response) {
             var icon = (item.methods === 19) ? "multilevel" : "switch";
 
             if (vDev) {
-                vDev.set("metrics:title", "TL " + item.name); //Update title
+                if (self.alwaysSyncTitlesFromTelldus) {
+                    vDev.set("metrics:title", "TL " + item.name); //Update title
+                }
+
                 if (vDev.get("metrics:level") !== level) { //Only change if the level if different (or triggers will go haywire)
                     vDev.set("metrics:level", level);
                 }
@@ -395,7 +399,10 @@ ImportTelldusLive.prototype.parseSensorResponse = function (response) {
                         vDev = self.controller.devices.get(localId);
 
                 if (vDev) {
-                    vDev.set("metrics:title", "TL " + item.name + " " + sensorData.name); //Update title
+                    if (self.alwaysSyncTitlesFromTelldus) {
+                        vDev.set("metrics:title", "TL " + item.name + " " + sensorData.name); //Update title
+                    }
+        
                     vDev.set("updateTime", sensorData.lastUpdated);
                     if (vDev.get("metrics:level") !== sensorData.value) { //Only change if the level if different (or triggers will go haywire)
                         vDev.set("metrics:level", sensorData.value);
