@@ -91,7 +91,7 @@ ImportTelldusLive.prototype.requestDeviceUpdate = function () {
     try {
         //Request data
         var request_data = {
-            url: this.urlPrefix + "/json/devices/list?supportedMethods=19&includeIgnored=1",
+            url: this.urlPrefix + "/json/devices/list?supportedMethods=19&includeIgnored=0",
             method: 'GET'
         };
 
@@ -347,7 +347,7 @@ ImportTelldusLive.prototype.requestSensorUpdate = function () {
     try {
         //Request data
         var request_data = {
-            url: this.urlPrefix + '/json/sensors/list?includeValues=1&includeIgnored=1&includeScale=1',
+            url: this.urlPrefix + '/json/sensors/list?includeValues=1&includeIgnored=0&includeScale=1',
             method: 'GET'
         };
 
