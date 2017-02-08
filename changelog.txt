@@ -1,0 +1,12 @@
+Version 1.0.3
+- Added optinal variable to make Titles always overwritten from Telldus Live (pull from cederstrom)
+- Dont fetch ignored devices or sensors (pull from cederstrom)
+
+Version 1.0.2
+- Added update command on demand for sensors. Removed Z-Way portion of ID when logging to EmonCMS.
+
+Version 1.0.1
+- Added retry request if original request times out
+
+Version 1.0.0
+- Initial release
