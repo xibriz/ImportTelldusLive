@@ -239,7 +239,7 @@ ImportTelldusLive.prototype.handleDeviceCommand = function (vDev, command, args)
             headers: this.oauth.toHeader(this.oauth.authorize(request_data, this.token)),
             async: true,
             success: function (response) {
-                if (response.status === 200, response.contentType === "application/json") {
+                if (response.status === 200 && response.contentType === "application/json") {
                     var data = response.data;
                     console.log(data.id);
                     console.log(remoteId);
