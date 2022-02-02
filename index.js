@@ -139,7 +139,7 @@ ImportTelldusLive.prototype.requestDeviceUpdate = function () {
 ImportTelldusLive.prototype.parseDeviceResponse = function (response) {
     var self = this;
 
-    if (response.status === 200, response.contentType === "application/json") {
+    if (response.status === 200 && response.contentType === "application/json") {
         var data = response.data;
 
         data.device.forEach(function (item) {
