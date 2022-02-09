@@ -1,6 +1,6 @@
 /*** ImportTelldusLive module *******************************************
  
- Version: 1.0.3
+ Version: 1.0.4
  -----------------------------------------------------------------------------
  Author: Ruben Andreassen <rubean85@gmail.com>
  Description:
